@@ -23,7 +23,6 @@ export const ProductManagement = () => {
       const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
 
-  if (loading) return <div className="text-center p-4">Loading...</div>;
   return (
     <div className="container mx-auto p-4">
       <div className="bg-white rounded-lg shadow-md">
@@ -37,11 +36,11 @@ export const ProductManagement = () => {
               Add Product
             </button>
           </div>
-          <div className="mt-4">
-            <SearchBar value={searchTerm} onChange={setSearchTerm} />
-          </div>
+          
         </div>
-
+        <div className=" p-4">
+            <SearchBar value={searchTerm} onChange={setSearchTerm} />
+        </div>
         {error && (
           <div className="mx-4 mb-4 p-4 bg-red-50 text-red-500 rounded-lg">
             {error}
@@ -49,7 +48,7 @@ export const ProductManagement = () => {
         )}
         
         <div className="p-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {products?.length === 0 ? 'No products found' : products?.map((product) => (
+          {loading? <div className="text-center p-4">Loading...</div> : products?.length === 0 ? 'No products found' : products?.map((product) => (
             <ProductCard
               key={product.id}
               product={product}

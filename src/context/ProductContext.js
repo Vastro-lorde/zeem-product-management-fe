@@ -29,6 +29,7 @@ export const ProductProvider = ({ children }) => {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [pageSize, setPageSize] = useState(9);
     const [searchTerm, setSearchTerm] = useState('');
 
     /**
@@ -45,7 +46,6 @@ export const ProductProvider = ({ children }) => {
             `${BACKEND_BASEURL}/Products/GetAllProducts?pageSize=${pageSize}&pageNumber=${pageNumber}`
           );
           const data = await response.json();
-          console.log(data);
           
           setProducts(()=> data?.pageItems);
           setTotalPages(data?.totalNumberOfPages);
@@ -57,14 +57,33 @@ export const ProductProvider = ({ children }) => {
         }
       };
 
+    const searchProducts = async ({pageSize, pageNumber, searchTerm}) => {
+        setLoading(true);
+        try {
+          const response = await fetch(
+            `${BACKEND_BASEURL}/Products/SearchProducts?name=${searchTerm}&pageSize=${pageSize}&pageNumber=${pageNumber}`
+          );
+          const data = await response.json();
+          setProducts(()=> data?.pageItems);
+          if (data?.pageItems?.length === 0) {
+            setCurrentPage(1);
+          }
+          setTotalPages(data?.totalNumberOfPages);
+          setError(null);
+        } catch (err) {
+          setError('Failed to fetch products');
+        } finally {
+          setLoading(false);
+        }
+    };
     const addProduct = async (product) => {
         try {
-            await fetch(`${BACKEND_BASEURL}/products`, {
+            await fetch(`${BACKEND_BASEURL}/Products/CreateProduct`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(product),
             });
-            await fetchProducts(currentPage, searchTerm);
+            await fetchProducts(pageSize, currentPage);
         } catch (err) {
             setError('Failed to add product');
         }
@@ -72,12 +91,12 @@ export const ProductProvider = ({ children }) => {
 
     const updateProduct = async (id, product) => {
         try {
-            await fetch(`${BACKEND_BASEURL}/api/products/${id}`, {
+            await fetch(`${BACKEND_BASEURL}/Products/UpdateProductById?id=${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(product),
             });
-            await fetchProducts(currentPage, searchTerm);
+            await fetchProducts(pageSize, currentPage);
         } catch (err) {
             setError('Failed to update product');
         }
@@ -85,16 +104,21 @@ export const ProductProvider = ({ children }) => {
 
     const deleteProduct = async (id) => {
         try {
-            await fetch(`/api/products/${id}`, { method: 'DELETE' });
-            await fetchProducts(currentPage, searchTerm);
+            await fetch(`${BACKEND_BASEURL}/Products/DeleteProductById?id=${id}`, { method: 'DELETE' });
+            await fetchProducts(pageSize, currentPage);
         } catch (err) {
             setError('Failed to delete product');
         }
     };
 
     useEffect(() => {
-        fetchProducts(10, 1);
-    }, [currentPage, searchTerm]);
+        if (searchTerm !== '') {
+            searchProducts({pageSize, pageNumber:currentPage, searchTerm}); 
+        }
+        else{
+            fetchProducts(pageSize, currentPage);
+        }
+    }, [currentPage, pageSize, searchTerm]);
 
     return (
         <ProductContext.Provider
@@ -103,6 +127,8 @@ export const ProductProvider = ({ children }) => {
             loading,
             error,
             currentPage,
+            pageSize,
+            setPageSize,
             totalPages,
             searchTerm,
             setSearchTerm,
