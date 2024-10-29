@@ -5,6 +5,7 @@ export const ProductForm = ({ initialData, onSubmit, onClose }) => {
     initialData || { name: '', description: '', price: '', stock: '' }
   );
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -15,13 +16,16 @@ export const ProductForm = ({ initialData, onSubmit, onClose }) => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const newErrors = validateForm();
     if (Object.keys(newErrors).length === 0) {
-      onSubmit(formData);
+      await onSubmit(formData);
+      setLoading(false);
       onClose();
     } else {
+      setLoading(false);
       setErrors(newErrors);
     }
   };
@@ -33,6 +37,7 @@ export const ProductForm = ({ initialData, onSubmit, onClose }) => {
           type="text"
           placeholder="Product Name"
           value={formData.name}
+          disabled={loading}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             errors.name ? 'border-red-500' : 'border-gray-300'
@@ -45,6 +50,7 @@ export const ProductForm = ({ initialData, onSubmit, onClose }) => {
           type="text"
           placeholder="Description"
           value={formData.description}
+          disabled={loading}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             errors.description ? 'border-red-500' : 'border-gray-300'
@@ -57,6 +63,7 @@ export const ProductForm = ({ initialData, onSubmit, onClose }) => {
           type="number"
           placeholder="Price"
           value={formData.price}
+          disabled={loading}
           onChange={(e) => setFormData({ ...formData, price: e.target.value })}
           className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             errors.price ? 'border-red-500' : 'border-gray-300'
@@ -69,6 +76,7 @@ export const ProductForm = ({ initialData, onSubmit, onClose }) => {
           type="number"
           placeholder="Stock"
           value={formData.stock}
+          disabled={loading}
           onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
           className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             errors.stock ? 'border-red-500' : 'border-gray-300'
@@ -80,15 +88,17 @@ export const ProductForm = ({ initialData, onSubmit, onClose }) => {
         <button
           type="button"
           onClick={onClose}
-          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+          disabled={loading}
+          className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Cancel
         </button>
         <button
           type="submit"
+          disabled={loading}
           className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
         >
-          Submit
+          {loading ? 'Saving...' : 'Save'}
         </button>
       </div>
     </form>
