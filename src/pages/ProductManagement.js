@@ -63,6 +63,7 @@ export const ProductManagement = () => {
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
+        <p className=' text-center font-semibold uppercase text-xs text-gray-500 mt-2'>All Rights Reserved - Seun Daniel Omatsola</p>
       </div>
 
       <Modal

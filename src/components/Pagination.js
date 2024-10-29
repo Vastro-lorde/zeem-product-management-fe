@@ -4,17 +4,17 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             <button
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="px-3 py-1 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3 py-1 border text-gray-600 font-bold uppercase rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 Previous
             </button>
-            <span>
+            <p className="text-gray-600 font-bold">
                 Page {currentPage} of {totalPages}
-            </span>
+            </p>
             <button
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3 py-1 border text-gray-600 font-bold uppercase rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 Next
             </button>
