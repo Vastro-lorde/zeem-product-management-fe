@@ -1,6 +1,6 @@
 export const ProductCard = ({ product, onEdit, onDelete }) => {
     return (
-        <div className="bg-white rounded-lg shadow-gray-500 shadow-md hover:shadow-sm p-4">
+        <div className="bg-white rounded-lg shadow-gray-500 shadow-md hover:shadow-sm hover:shadow-gray-700 p-4">
             <h3 className="font-semibold text-lg capitalize">{product.name}</h3>
             <p className="text-sm text-gray-600 mt-1 text-wrap">{product.description}</p>
             <div className="mt-2">

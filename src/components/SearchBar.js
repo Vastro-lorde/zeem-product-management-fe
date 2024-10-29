@@ -1,6 +1,6 @@
 export const SearchBar = ({ value, onChange }) => {
     return (
-      <div className="focus:outline-none focus:outline shadow-md shadow-gray-400 rounded-lg p-2">
+      <div className="focus:outline-none focus:outline shadow-md shadow-gray-400 hover:shadow-sm hover:shadow-gray-700 rounded-lg p-2">
         <div className=" flex items-center w-full pl-3 gap-1">
             <p className=" w-8 text-center p-1 font-bold">🔍</p>
             <input
