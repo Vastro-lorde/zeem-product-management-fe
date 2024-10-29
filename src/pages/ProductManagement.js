@@ -49,7 +49,7 @@ export const ProductManagement = () => {
         )}
         
         <div className="p-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
+          {products?.length === 0 ? 'No products found' : products?.map((product) => (
             <ProductCard
               key={product.id}
               product={product}

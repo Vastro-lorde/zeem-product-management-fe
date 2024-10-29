@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { BACKEND_BASEURL } from '../utility/enums';
 
 const ProductContext = createContext();
 
@@ -30,15 +31,24 @@ export const ProductProvider = ({ children }) => {
     const [totalPages, setTotalPages] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const fetchProducts = async (page, search) => {
+    /**
+     * Fetches the products from the backend based on the given page size and page number.
+     * Sets the products, total pages, and error states accordingly.
+     *
+     * @param {number} pageSize The number of products to fetch per page.
+     * @param {number} pageNumber The page number to fetch.
+     */
+    const fetchProducts = async (pageSize, pageNumber) => {
         setLoading(true);
         try {
           const response = await fetch(
-            `/api/products?page=${page}&search=${search}`
+            `${BACKEND_BASEURL}/Products/GetAllProducts?pageSize=${pageSize}&pageNumber=${pageNumber}`
           );
           const data = await response.json();
-          setProducts(data.items);
-          setTotalPages(Math.ceil(data.totalCount / 10));
+          console.log(data);
+          
+          setProducts(()=> data?.pageItems);
+          setTotalPages(data?.totalNumberOfPages);
           setError(null);
         } catch (err) {
           setError('Failed to fetch products');
@@ -49,7 +59,7 @@ export const ProductProvider = ({ children }) => {
 
     const addProduct = async (product) => {
         try {
-            await fetch('/api/products', {
+            await fetch(`${BACKEND_BASEURL}/products`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(product),
@@ -62,7 +72,7 @@ export const ProductProvider = ({ children }) => {
 
     const updateProduct = async (id, product) => {
         try {
-            await fetch(`/api/products/${id}`, {
+            await fetch(`${BACKEND_BASEURL}/api/products/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(product),
@@ -83,7 +93,7 @@ export const ProductProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        fetchProducts(currentPage, searchTerm);
+        fetchProducts(10, 1);
     }, [currentPage, searchTerm]);
 
     return (

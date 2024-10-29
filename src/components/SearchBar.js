@@ -11,4 +11,4 @@ export const SearchBar = ({ value, onChange }) => {
         <span className="absolute left-3 top-2.5">🔍</span>
       </div>
     );
-  };
+};

@@ -1,0 +1,1 @@
+export const BACKEND_BASEURL = 'https://zeem-product-management-be.onrender.com/api';
