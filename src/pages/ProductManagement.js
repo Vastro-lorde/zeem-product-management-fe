@@ -24,7 +24,7 @@ export const ProductManagement = () => {
   const [editProduct, setEditProduct] = useState(null);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 transition-all ease-in-out">
       <div className="bg-white rounded-lg shadow-md">
         <div className="p-4">
           <div className="flex justify-between items-center">
@@ -47,8 +47,8 @@ export const ProductManagement = () => {
           </div>
         )}
         
-        <div className="p-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {loading? <div className="text-center p-4">Loading...</div> : products?.length === 0 ? 'No products found' : products?.map((product) => (
+        {loading? <p className="w-full text-center p-4 transition-all ease-in-out">Loading...</p> : products?.length === 0 ? <p className='w-full text-center transition-all ease-in-out'>No products found</p> :  <div className="p-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3 transition-all ease-in-out">
+          {products?.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -56,7 +56,7 @@ export const ProductManagement = () => {
               onDelete={deleteProduct}
             />
           ))}
-        </div>
+        </div>}
 
         <Pagination
           currentPage={currentPage}
