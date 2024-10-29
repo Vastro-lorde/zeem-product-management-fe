@@ -7,6 +7,8 @@ import { Pagination } from '../components/Pagination';
 import { SearchBar } from '../components/SearchBar';
 
 export const ProductManagement = () => {
+    document.title = 'Product Management';
+    
     const {
         products,
         loading,

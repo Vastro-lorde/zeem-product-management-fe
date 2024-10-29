@@ -46,7 +46,7 @@ export const ProductProvider = ({ children }) => {
             `${BACKEND_BASEURL}/Products/GetAllProducts?pageSize=${pageSize}&pageNumber=${pageNumber}`
           );
           const data = await response.json();
-          
+
           setProducts(()=> data?.pageItems);
           setTotalPages(data?.totalNumberOfPages);
           setError(null);

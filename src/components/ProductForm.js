@@ -4,6 +4,11 @@ export const ProductForm = ({ initialData, onSubmit, onClose }) => {
     const [formData, setFormData] = useState(
     initialData || { name: '', description: '', price: '', stock: '' }
   );
+  if (initialData) {
+    document.title = 'Update Product';
+  }else{
+    document.title = 'Add Product';
+  }
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
